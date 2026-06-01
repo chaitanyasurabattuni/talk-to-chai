@@ -13,7 +13,7 @@ export interface StoryContent {
 
 export const story: Record<PersonaId, StoryContent> = {
   recruiter: {
-    lede: "Three years turning GenAI demos into systems you can trust in production.",
+    lede: "Nearly three years turning GenAI demos into systems you can trust in production.",
     paragraphs: [
       "I'm an ML/AI engineer focused on the part most teams skip: proving the agent actually works. At PrimeHealth I build the evaluation infrastructure behind a multi-channel AI health coach — ground-truth datasets, per-field accuracy metrics, and an LLM-as-judge framework that pushed domain routing from 71% to 93%.",
       "Before that I shipped production LLM voice and chat agents at LMES and cut model-serving costs by up to 90%. The through-line: I care about impact you can measure, and I'll tell you honestly where the gaps are.",

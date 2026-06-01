@@ -61,7 +61,7 @@ export const profile = {
   subtitle: "GenAI & Agentic AI Evaluation",
   location: "Bay Area, CA",
   tagline: "I build AI agents — and the systems that prove they actually work.",
-  yearsExperience: "3+",
+  yearsExperience: "nearly 3",
   email: "chaitanyasurabattuni@gmail.com",
   phone: "+1 (945) 268-4534",
   links: {
@@ -69,7 +69,7 @@ export const profile = {
     github: "https://github.com/chaitanyasurabattuni",
   },
   summary:
-    "AI/ML Engineer with 3+ years of experience building and evaluating GenAI and Agentic AI systems across healthcare and enterprise AI. Currently building LLM evaluation infrastructure for an AI health coaching agent at PrimeHealth Technologies — designing ground-truth datasets, per-field accuracy metrics, LLM-as-judge frameworks, and CI-integrated regression suites. Prior production experience spans LangGraph agentic workflows, RAG pipelines, and ML systems at scale. AWS Certified Solutions Architect; MS in Artificial Intelligence (GPA 3.8), University of North Texas.",
+    "ML/AI Engineer with nearly 3 years of experience building and evaluating GenAI and Agentic AI systems across fintech and healthcare. Currently building LLM evaluation infrastructure for an AI health coaching agent at PrimeHealth Technologies — designing ground-truth datasets, per-field accuracy metrics, LLM-as-judge frameworks, and CI-integrated regression suites. Prior production experience spans LangGraph agentic workflows, RAG pipelines, and ML systems at scale. Proficient in PyTorch, TensorFlow, HuggingFace Transformers, Python, and cloud-native MLOps (AWS, Docker, Kubernetes). AWS Certified Solutions Architect; MS in Artificial Intelligence, University of North Texas.",
   // Notes for the agent about what is NOT known (avoid fabrication on common asks).
   notKnown: [
     "Exact current compensation or salary expectations",
@@ -165,7 +165,7 @@ export const highlights: Highlight[] = [
 export const experience: Role[] = [
   {
     id: "primehealth",
-    title: "Jr. Agent Evaluation Engineer",
+    title: "Agent Evaluation Engineer",
     org: "PrimeHealth Technologies",
     location: "Bay Area, CA",
     start: "Apr 2026",
@@ -173,7 +173,7 @@ export const experience: Role[] = [
     summary:
       "Building the LLM evaluation infrastructure behind a multi-channel AI health coaching agent (chat, WhatsApp, voice).",
     bullets: [
-      "Built ground-truth evaluation datasets of 60+ labeled examples across 21 health intent domains and adversarial edge cases to benchmark a multi-channel AI health coaching agent (chat, WhatsApp, voice); established per-field accuracy metrics across 5 classification dimensions, driving domain routing accuracy from 71% to 93%.",
+      "Built ground-truth evaluation datasets spanning 21 health intent domains and adversarial edge cases to benchmark a multi-channel AI health coaching agent (chat, WhatsApp, voice); established per-field accuracy metrics across 5 classification dimensions, driving domain routing accuracy from 71% to 93%.",
       "Designed and deployed an LLM-as-judge evaluation framework synthesizing 128 user personas and scoring AI-generated health recommendations on a structured 0–100 rubric, enabling scalable qualitative benchmarking at 15× the throughput of manual annotation.",
       "Identified and resolved a critical silent regression in the automated test suite where all classifier assertions passed vacuously, restoring meaningful CI signal and preventing undetected model drift across future model updates.",
       "Decoupled LLM-dependent regression tests from deterministic unit tests in CI, reducing average pipeline runtime by 60% while maintaining full coverage on non-LLM components.",
@@ -191,7 +191,7 @@ export const experience: Role[] = [
     summary:
       "Shipped production LLM voice & chat agents and RAG pipelines, with a focus on cost and reliability.",
     bullets: [
-      "Designed and deployed production LLM-powered voice and chat agents using Python and LangGraph; applied advanced prompt engineering to maintain brand consistency and eliminate hallucinations across customer-facing channels.",
+      "Designed and deployed production LLM-powered voice and chat agents using Python and LangGraph; applied advanced prompt engineering to maintain brand consistency and reduce hallucinations across customer-facing channels.",
       "Built RAG-based information-retrieval pipelines integrating structured (SQL/DynamoDB) and unstructured data sources, enabling automated resolution of complex member queries across 10+ microservices.",
       "Achieved up to 90% reduction in model-serving costs via hybrid local/cloud execution, Redis-based semantic caching, and async architectures; implemented CI/CD via GitHub Actions and Docker enabling rollback-ready releases.",
       "Conducted continuous QA on AI agent conversations — analyzing logs, identifying failure modes, and iterating on prompts and decision logic to improve resolution rates and interaction quality.",
@@ -238,7 +238,7 @@ export const projects: Project[] = [
     stack: ["LangGraph", "Python", "RAG", "SQLite", "Docker"],
     bullets: [
       "Architected a LangGraph-based agentic workflow orchestrating 3 specialized AI agents (Researcher / Coder / Reviewer) with human-in-the-loop checkpoints, iterative review cycles, and SQLite persistent session state; implemented TDD and modular OOP design enabling clean agent extension and unit testing.",
-      "Implemented a RAG pipeline over structured and unstructured data with efficient retrieval and minimal resource overhead.",
+      "Implemented a RAG pipeline over structured and unstructured data, optimized for efficient retrieval with minimal resource overhead.",
     ],
   },
   {
@@ -246,8 +246,7 @@ export const projects: Project[] = [
     name: "High-Throughput ML Inference Microservice",
     stack: ["NVIDIA Triton", "Kubernetes", "Kafka", "Redis", "Prometheus/Grafana"],
     bullets: [
-      "Engineered a production GPU inference service on Kubernetes using NVIDIA Triton with async batching via Kafka and Redis, achieving 40% P99 latency reduction.",
-      "Deployed a Prometheus/Grafana observability stack with real-time SLA alerting; GPU/accelerator-optimized inference.",
+      "Engineered a production GPU inference service on Kubernetes using NVIDIA Triton with async batching via Kafka and Redis, achieving 40% P99 latency reduction; deployed a Prometheus/Grafana observability stack with real-time SLA alerting.",
     ],
   },
   {
