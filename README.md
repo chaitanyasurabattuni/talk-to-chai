@@ -1,89 +1,81 @@
-# Talk to Chai — Conversational Portfolio
+# Talk to Chai
 
-> *"I build AI agents — and the systems that prove they actually work."*
+A portfolio that you talk to instead of just read.
 
-A single-page **cinematic scroll portfolio** that begins as a polished résumé and
-**boots up into a live, self-grading AI agent** as you scroll. By the bottom, a visitor
-has *used* an agent — watched it grade its own answers against the résumé, and tested it
-against their own job description.
+It opens like a normal résumé, then about halfway down it boots up into a live AI agent
+that knows my background and answers questions about it. The catch: every answer it gives
+is graded in real time by a second model, and you can watch the scores. If it ever makes
+something up, the grade drops and you'll see it.
 
-The medium is the message: the page demonstrates GenAI + agent **evaluation** rather than
-just describing it.
+I build AI agents and the evaluation systems that keep them honest. This page is the
+argument for that, built as the thing itself.
 
----
+Live: _add your Vercel URL here_
 
-## Quick start
+## Running it locally
+
+You need Node 18+ and a free Groq API key (grab one at https://console.groq.com/keys).
 
 ```bash
 npm install
-
-# 1. Get a free Groq API key → https://console.groq.com/keys
-cp .env.example .env
-#    then edit .env and set GROQ_API_KEY=gsk_...
-
-npm run dev        # http://localhost:5173  (API routes served automatically)
+cp .env.example .env        # paste your GROQ_API_KEY into .env
+npm run dev                 # http://localhost:5173
 ```
 
-`npm run dev` runs the frontend **and** the `/api/*` serverless handlers locally via a
-small Vite middleware — no Vercel CLI needed. Just the key.
+That's it. `npm run dev` serves the React app and the `/api` functions together through a
+small Vite middleware, so there's no separate backend to start and no Vercel CLI to install.
 
 ```bash
-npm run build      # typecheck + production build to dist/
-npm run preview    # preview the production build (static only — no API)
+npm run build               # type-check + production build
+npm run preview             # serve the built static files (chat needs the deployed API)
 ```
 
----
+## How it's put together
 
-## How it works
+The whole thing hangs off one idea: `src/data/resume.ts` is the single source of truth.
+The résumé sections you read and the knowledge the agent is given are built from the same
+file, so they can't quietly disagree. If a fact isn't in there, the agent says so instead
+of inventing one.
 
-| Layer | What it does |
-|---|---|
-| **Grounding** | [`src/data/resume.ts`](src/data/resume.ts) is the single source of truth. The portfolio sections **and** the agent both render from it, so they can never drift. |
-| **Personas** | [`src/data/personas.ts`](src/data/personas.ts) builds the grounding dossier + per-persona system prompts, plus the LLM-as-judge rubric. |
-| **Chat** | [`api/chat.ts`](api/chat.ts) streams a grounded answer from Groq (Llama 3.3 70B). |
-| **Eval** | [`api/judge.ts`](api/judge.ts) — a second, smaller model scores each answer (groundedness / relevance / persona-fit) and returns strict JSON. The signature feature. |
-| **Fit-checker** | [`api/fit.ts`](api/fit.ts) — paste a JD → structured strong / partial / gap assessment. |
-| **Provider adapter** | [`api/_lib.ts`](api/_lib.ts) wraps an OpenAI-compatible API. Swapping Groq → Claude/OpenAI is a one-config change in `getProvider()`. |
+- `src/data/resume.ts` — the résumé as structured data, plus a few personal facts.
+- `src/data/personas.ts` — turns that data into the agent's grounding, the per-persona
+  system prompts (recruiter / engineer / curious), and the grading rubric.
+- `api/chat.ts` — streams the agent's reply token by token.
+- `api/judge.ts` — a separate, smaller model scores each answer on groundedness,
+  relevance, and persona-fit, and returns strict JSON. This is the part I care about most.
+- `api/fit.ts` — paste a job description and get an honest strong / partial / gap read.
+- `api/_lib.ts` — a thin wrapper over an OpenAI-compatible API (Groq today), so pointing
+  it at Claude or anyone else is a one-line change.
 
-Everything runs on **free tiers** — Groq's free API + a static deploy. ~$0/mo.
+The agent is hard to talk out of character. There's a deterministic guard that refuses
+obvious injection and jailbreak attempts before they ever reach the model, prompt-level
+hardening behind that, and an output filter that blocks the system prompt from leaking.
+The grader is the last line: anything that slips through still shows up as a bad score.
 
-### Environment variables
+It runs entirely on free tiers, so it costs about nothing to host. When the primary model
+hits a free-tier limit it automatically falls back to a smaller one rather than going dark.
 
-| Var | Default | Notes |
-|---|---|---|
-| `GROQ_API_KEY` | — (required) | From https://console.groq.com/keys |
-| `GROQ_CHAT_MODEL` | `llama-3.3-70b-versatile` | The streaming chat agent |
-| `GROQ_JUDGE_MODEL` | `llama-3.1-8b-instant` | The faster LLM-as-judge |
-| `GROQ_BASE_URL` | `https://api.groq.com/openai/v1` | Swap to point at another provider |
+## Configuration
 
----
+Everything is driven by env vars (see `.env.example`):
 
-## Deploy (Vercel — recommended)
+| Variable | Default | What it's for |
+| --- | --- | --- |
+| `GROQ_API_KEY` | _required_ | Your Groq key |
+| `GROQ_CHAT_MODEL` | `llama-3.3-70b-versatile` | The chat agent |
+| `GROQ_JUDGE_MODEL` | `llama-3.1-8b-instant` | The grader |
+| `GROQ_FALLBACK_MODEL` | `llama-3.1-8b-instant` | Used if the chat model is rate-limited |
+| `GROQ_BASE_URL` | Groq's endpoint | Change it to use a different provider |
 
-1. Push to GitHub, import the repo into Vercel (framework auto-detects as Vite).
-2. Add `GROQ_API_KEY` (and optionally the model overrides) in **Project → Settings → Environment Variables**.
-3. Deploy. `vercel.json` already wires the SPA rewrite and serves `/api/*` as edge functions.
+## Deploying
 
-**Cloudflare Pages** also works on the free tier — the API handlers are web-standard
-`(Request) => Response`, but Pages Functions use a slightly different file convention
-(`functions/api/chat.ts` exporting `onRequest`). Adapt the three handlers if you go that route.
+Built for Vercel. Import the repo, add `GROQ_API_KEY` under Project Settings →
+Environment Variables, and deploy — `vercel.json` already handles the SPA routing and the
+`/api` functions. Cloudflare Pages works too, though its Functions use a slightly different
+file convention you'd need to adapt.
 
----
+## Stack
 
-## Architecture notes
-
-- **Streaming**: `api/chat.ts` transforms Groq's OpenAI-style SSE into a plain UTF-8 token
-  stream; the client reads it incrementally for the live-typing effect.
-- **Honesty by design**: the system prompt forbids fabrication. Off-résumé questions get a
-  clean refusal + an email nudge — and the judge scores a clean refusal as *highly grounded*.
-- **Rate limiting**: best-effort in-memory per-IP limiter in `_lib.ts` (per-instance only —
-  a speed-bump, not a hard guarantee). Input is capped at 4000 chars / 24 messages.
-
----
-
-## TODO before going live
-
-- [ ] **Rotate the Groq API key** before public deploy and set the fresh one as a
-      Vercel/Cloudflare env var (the local `.env` key was shared in chat).
-- [ ] Add a portrait image to the hero if desired.
-- [ ] Set a custom domain (optional, ~$12/yr).
+React, TypeScript, Vite, Tailwind, and Framer Motion on the front end; small edge-style
+functions and the Groq API on the back. No database — the résumé fits in the model's
+context, so there's nothing to index.
