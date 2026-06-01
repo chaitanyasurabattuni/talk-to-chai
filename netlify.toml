@@ -1,0 +1,15 @@
+# Netlify deployment config.
+# Functions in netlify/functions/ declare their own /api/* paths (v2 `config.path`),
+# so they take precedence over the SPA fallback below.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# Single-page app fallback: everything that isn't a function or a static asset
+# is served index.html so client-side anchors keep working.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

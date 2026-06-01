@@ -11,8 +11,6 @@
 import { buildJudgePrompt, buildGrounding, personas, type PersonaId } from "../src/data/personas";
 import { getProvider, rateLimit, clientIp, json, MAX_INPUT_CHARS } from "./_lib";
 
-export const config = { runtime: "edge" };
-
 const VALID_PERSONAS: PersonaId[] = ["recruiter", "engineer", "curious"];
 
 export interface EvalResult {

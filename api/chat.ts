@@ -24,8 +24,6 @@ const STREAM_HEADERS = {
   "X-Accel-Buffering": "no",
 };
 
-export const config = { runtime: "edge" };
-
 const VALID_PERSONAS: PersonaId[] = ["recruiter", "engineer", "curious"];
 
 export default async function handler(req: Request): Promise<Response> {

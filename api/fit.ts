@@ -12,8 +12,6 @@ import { buildGrounding } from "../src/data/personas";
 import { profile } from "../src/data/resume";
 import { getProvider, rateLimit, clientIp, json } from "./_lib";
 
-export const config = { runtime: "edge" };
-
 const MAX_JD_CHARS = 6000;
 
 export interface FitItem {

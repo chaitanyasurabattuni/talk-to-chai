@@ -23,7 +23,7 @@ npm run dev                 # http://localhost:5173
 ```
 
 That's it. `npm run dev` serves the React app and the `/api` functions together through a
-small Vite middleware, so there's no separate backend to start and no Vercel CLI to install.
+small Vite middleware, so there's no separate backend to start and no CLI to install.
 
 ```bash
 npm run build               # type-check + production build
@@ -69,10 +69,10 @@ Everything is driven by env vars (see `.env.example`):
 
 ## Deploying
 
-Built for Vercel. Import the repo, add `GROQ_API_KEY` under Project Settings →
-Environment Variables, and deploy — `vercel.json` already handles the SPA routing and the
-`/api` functions. Cloudflare Pages works too, though its Functions use a slightly different
-file convention you'd need to adapt.
+Built for Netlify. Connect the repo at app.netlify.com, add `GROQ_API_KEY` (and the model
+overrides if you want them) under Site configuration → Environment variables, and deploy.
+`netlify.toml` sets the build command and publish directory, and the functions in
+`netlify/functions/` register the `/api/*` routes, so there's nothing else to wire up.
 
 ## Stack
 
